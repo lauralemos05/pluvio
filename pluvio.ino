@@ -20,7 +20,7 @@ int qtd_movimentos = 0;                               // Declara uma variável p
 unsigned long tempoUsado_contabilizarUnicaVez = 500;  // Declarar uma variável que determine um tempo que contabilize o movimento uma única vez
 unsigned long tempo_atual = 0;                        // Variável que determina o tempo atual em milissegundos
 unsigned long tempo_ultimoMovimento = 0;              // Variável usada para registrar o tempo do último movimento
-const int interruptPin = 14;                          // Define o pino de interrupção. Pino D5 no ESP8266 corresponde ao GPIO14
+const int interruptPin = 13;                          // Define o pino de interrupção. Pino D5 no ESP8266 corresponde ao GPIO14
 
 
 void ICACHE_RAM_ATTR somarMovimento() {  // Define a função de interrupção que será chamada quando ocorrer um evento de interrupção
@@ -55,7 +55,7 @@ void onConnectionEstablished() {
 }
 
 void availableSignal() {
-  client.publish("topic_name/available", "online");
+  client.publish("cm/pluviografo/available", "online");
 }
 
 StaticJsonDocument<100> readSensor() {
@@ -84,7 +84,7 @@ void metodoPublisher() {
   if (amostrasTotais >= JANELA_FILTRO) {
     StaticJsonDocument<300> jsonDoc;
     jsonDoc["RSSI"] = WiFi.RSSI();
-    jsonDoc["milimetro de chuva"] = qtd_movimentos * QTD_AGUA_POR_MOV;  //
+    jsonDoc["milimetro_chuva"] = qtd_movimentos * QTD_AGUA_POR_MOV;  //
     jsonDoc["erro"] = false;
 
     //colocar loop do codigo original
@@ -138,6 +138,6 @@ void loop() {
 
   blinkLed();
 
-  // Serial.println(qtd_movimentos);  // Imprime o valor atual de qtd_movimentos na porta serial
+  //Serial.println(qtd_movimentos);  // Imprime o valor atual de qtd_movimentos na porta serial
   delay(100);  // Aguarda 100 milissegundos antes de repetir o loop
 }
